@@ -46,9 +46,8 @@ angular.module('ImgCache', [])
         link: function(scope, el, attrs) {
 
             var setImg = function(type, el, src) {
-
-                ImgCache.getCachedFileURL(src, function(src, dest) {
-
+                ImgCache.getCachedFile(src, function(src, dest) {
+                    var dest = dest.fullPath.replace('//' + ImgCache.options.localCacheFolder, ImgCache.getCacheFolderURI());
                     if(type === 'bg') {
                         el.css({'background-image': 'url(' + dest + ')' });
                     } else {
@@ -63,6 +62,7 @@ angular.module('ImgCache', [])
 
                     ImgCache.isCached(src, function(path, success) {
 
+                        console.log('ImgCache.isCached - ', src, path);
                         if (success) {
                             setImg(type, el, src);
                         } else {
